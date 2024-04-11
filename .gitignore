@@ -1,0 +1,9 @@
+*.bak
+.vscode
+build*
+*.cache
+.$*
+*a.out
+*vgcore.*
+compile_commands.json
+test.*

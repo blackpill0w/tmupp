@@ -1,0 +1,12 @@
+compile_commands.json
+music_library.sqlite
+music_library.sqlite-journal
+*.bak
+.vscode
+build*
+*.cache
+.$*
+*a.out
+*vgcore.*
+music_for_testingcompile_commands.json
+docs/html
