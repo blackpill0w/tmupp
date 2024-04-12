@@ -17,6 +17,7 @@ option(MIDX_BUILD_TESTS "Whether to build tests" FALSE)
 option(MIDX_PYTHON_BINDINGS "Whether to generate python bindings" FALSE)
 
 set(BUILD_TESTING FALSE)
+set(SQLITECPP_RUN_CPPLINT FALSE)
 
 # SqliteCpp
 add_subdirectory("deps/SQLiteCpp")

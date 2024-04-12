@@ -13,7 +13,17 @@ int main() {
   auto screen = ScreenInteractive::Fullscreen();
 
   std::vector<std::string> left_menu_entries = {
-      "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%",
+      "0%",  "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "0%",  "10%", "20%",
+      "30%", "40%", "50%", "60%", "70%", "80%", "90%", "0%",  "10%", "20%", "30%", "40%", "50%",
+      "60%", "70%", "80%", "90%", "0%",  "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%",
+      "90%", "0%",  "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "0%",  "10%",
+      "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "0%",  "10%", "20%", "30%", "40%",
+      "50%", "60%", "70%", "80%", "90%", "0%",  "10%", "20%", "30%", "40%", "50%", "60%", "70%",
+      "80%", "90%", "0%",  "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "0%",
+      "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "0%",  "10%", "20%", "30%",
+      "40%", "50%", "60%", "70%", "80%", "90%", "0%",  "10%", "20%", "30%", "40%", "50%", "60%",
+      "70%", "80%", "90%", "0%",  "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%",
+
   };
   std::vector<std::string> right_menu_entries = {
       "0%", "1%", "2%", "3%", "4%", "5%", "6%", "7%", "8%", "9%", "10%",
@@ -32,17 +42,11 @@ int main() {
       right_menu_,
   });
 
-  Component *r = nullptr;
-
   container |= CatchEvent([&](Event e) {
     if (e.is_character()) {
       if (e.character() == "a") {
         left_menu_entries[0] = "Ayy!";
         return true;
-      } else if (e.character() == "m") {
-        container = Container::Vertical({left_menu_, right_menu_});
-        screen.Exit();
-        screen.Loop(*r);
       } else if (e.character() == "q") {
         screen.Exit();
         return true;
@@ -60,46 +64,27 @@ int main() {
                    vbox({
                        hcenter(bold(text("Percentage by 10%"))),
                        separator(),
-                       left_menu_->Render(),
-                   }) | flex_shrink,
+                       left_menu_->Render() | frame | focus,
+                   }) | xflex_shrink,
                    separator(),
                    // -------- Right Menu --------------
                    vbox({
                        hcenter(bold(text("Percentage by 1%"))),
                        separator(),
-                       right_menu_->Render(),
-                   }) | flex,
-                   separator(),
-               }) | flex_grow,
-               separator(),
-               // -------- Bottom panel --------------
-               vbox({
-                   hbox({
-                       text(" gauge : "),
-                       gauge(sum / 100.0),
-                   }),
-                   hbox({
-                       text("  text : "),
-                       text(std::to_string(sum) + " %"),
-                   }),
+                       right_menu_->Render() | frame | flex,
+                   }) | xflex_grow,
                }),
+               separator(),
            }) |
            border;
   });
 
-  auto add_mdir_button = Button("Add Music Directory", [&] {});
-
-  auto settings_layout = Container::Vertical({add_mdir_button});
-  auto settings_view_renderer =
-    Renderer(settings_layout, [&] { return center(vbox(add_mdir_button->Render())); });
-
   auto music_view_button = Button("Music", [&] { screen.Loop(music_view_renderer); });
-  auto settings_button   = Button("Settings", [&] { screen.Loop(settings_view_renderer); });
   auto quit_button       = Button("Quit", screen.ExitLoopClosure());
 
-  auto layout             = Container::Vertical({music_view_button, settings_button, quit_button});
+  auto layout             = Container::Vertical({music_view_button, quit_button});
   auto main_menu_renderer = Renderer(layout, [&] {
-    return center(vbox(music_view_button->Render(), settings_button->Render(), quit_button->Render()));
+    return center(vbox(music_view_button->Render(), quit_button->Render()));
   });
 
   screen.Loop(main_menu_renderer);
